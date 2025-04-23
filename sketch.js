@@ -3,6 +3,7 @@ let largo_canvas = 800;
 let listaObstaculos = [];
 
 let jugador = {
+  puntuacion: 0,
   largo: 100,
   ancho: 15,
   x: 350,
@@ -48,6 +49,7 @@ function setup() {
       let obstaculoNivelUno = {
         largo: 50,
         ancho: 20,
+        valorPuntos: 10,
         colorFondo: "green",
         vida: 1,
         x: k,
@@ -60,6 +62,8 @@ function setup() {
 
 function draw() {
   background("black");
+  textSize(20);
+  text('Puntuación: ' + jugador.puntuacion, 50, 50);
   
   for (let i = listaObstaculos.length - 1; i >= 0; i--){ 
     fill(listaObstaculos[i].colorFondo);
@@ -119,9 +123,10 @@ function draw() {
       pelota.x > listaObstaculos[i].x &&
       pelota.y >= listaObstaculos[i].y &&
       pelota.y <= listaObstaculos[i].y + listaObstaculos[i].ancho){
-      listaObstaculos.splice(i, 1);
       pelota.direccionY = -pelota.direccionY; //Si colisiona, rebota en la direcciom opuesta
-      break;
+      jugador.puntuacion += listaObstaculos[i].valorPuntos;
+      listaObstaculos.splice(i, 1);
+      
     }
    
     
