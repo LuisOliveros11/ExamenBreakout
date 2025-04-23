@@ -2,8 +2,11 @@ let ancho_canvas = 800;
 let largo_canvas = 800;
 let listaObstaculos = [];
 
+let juego_terminado = false;
+
 let jugador = {
   puntuacion: 0,
+  vidas: 3,
   largo: 100,
   ancho: 15,
   x: 350,
@@ -42,27 +45,14 @@ let obstaculoNivelTres = {
 function setup() {
   createCanvas(ancho_canvas, largo_canvas);
   
-  /*ESTE FOR SIRVE PARA LLENAR LA LISTA DE OBSTACULOS EN UN INICIO,
-  SE IRA MODIFICANDO (CON UN SWITCH PROBABLEMENTE) DE ACUERDO AL NIVEL EN EL QUE ESTE EL USUARIO*/
-  for (let i = 100; i <= 140; i+=20){ 
-    for (let k = 150; k < 650; k+=50){
-      let obstaculoNivelUno = {
-        largo: 50,
-        ancho: 20,
-        valorPuntos: 10,
-        colorFondo: "green",
-        vida: 1,
-        x: k,
-        y: i
-      };
-      listaObstaculos.push(obstaculoNivelUno);
-    }
-  }
+  llenar_bloques_nivel_1()
+  
 }
 
 function draw() {
   background("black");
   textSize(20);
+  textAlign(LEFT, BASELINE);
   text('Puntuación: ' + jugador.puntuacion, 50, 50);
   
   for (let i = listaObstaculos.length - 1; i >= 0; i--){ 
@@ -115,6 +105,8 @@ function draw() {
     pelota.velocidadY = 0; 
     pelota.direccionX = 0;
     pelota.direccionY = 0;
+    jugador.vidas--;
+    console.log(jugador.vidas)
   }
   
   //VALIDAR DETECCIÓN DE PELOTA CON OBSTÁCULOS
@@ -128,7 +120,20 @@ function draw() {
       listaObstaculos.splice(i, 1);
       
     }
-   
+  }
+  
+  //VALIDAR SI EL JUEGO TERMINA EN CASO DE QUE YA NO QUEDEN VIDAS
+  
+  if(jugador.vidas == 0){
+    textSize(32);
+    fill("white");
+    background("black"); 
+    textAlign(CENTER, CENTER);
+    text("¡TE HAS QUEDADO SIN VIDAS!", ancho_canvas / 2, largo_canvas / 2 - 30);
+    textSize(22);
+    text("Presiona Enter para volver a jugar", ancho_canvas / 2, largo_canvas / 2 + 20);
+    noLoop(); 
+    juego_terminado = true;
     
   }
 }
@@ -142,4 +147,48 @@ function keyPressed() {
     pelota.direccionX = 1;
     pelota.direccionY = -1;
   }
+  if (keyCode === 13 && juego_terminado) {
+    reiniciar_juego();
+  }
+}
+
+function llenar_bloques_nivel_1() {
+  /*ESTE FOR SIRVE PARA LLENAR LA LISTA DE OBSTACULOS EN UN INICIO,
+  SE IRA MODIFICANDO (CON UN SWITCH PROBABLEMENTE) DE ACUERDO AL NIVEL EN EL QUE ESTE EL USUARIO*/
+  for (let i = 100; i <= 140; i+=20){ 
+    for (let k = 150; k < 650; k+=50){
+      let obstaculoNivelUno = {
+        largo: 50,
+        ancho: 20,
+        valorPuntos: 10,
+        colorFondo: "green",
+        vida: 1,
+        x: k,
+        y: i
+      };
+      listaObstaculos.push(obstaculoNivelUno);
+    }
+  }
+}
+
+function reiniciar_juego() {
+  //Reiniciar variables y posicion del jugador
+  jugador.puntuacion = 0;
+  jugador.vidas = 3;
+  jugador.x = 350;
+  jugador.y = 700;
+  
+  //Reiniciar variables y posicion de la pelota
+  pelota.x = jugador.x + 50;
+  pelota.y = jugador.y - 15;
+  pelota.velocidadX = 0;
+  pelota.velocidadY = 0;
+  pelota.direccionX = 0;
+  pelota.direccionY = 0;
+  
+  llenar_bloques_nivel_1();
+    
+  //Volver a iniciar el ciclo
+  loop();
+  juego_terminado = false;
 }
