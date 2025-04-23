@@ -79,6 +79,7 @@ function draw() {
   }
   
   //VALIDA COLISION CON EL CANVAS
+  
   if(pelota.y + pelota.radio >= largo_canvas){
     pelota.direccionY = -pelota.direccionY;
   }
@@ -102,12 +103,28 @@ function draw() {
   
   //VALIDA SI EL USUARIO PIERDE UNA VIDA
   if(pelota.y > jugador.y + jugador.ancho){
+    
+    //SE REINICIA LA POSICION Y LOS VALORES
     pelota.x = jugador.x + 50,
     pelota.y = jugador.y - 15,
     pelota.velocidadX = 0;
     pelota.velocidadY = 0; 
     pelota.direccionX = 0;
     pelota.direccionY = 0;
+  }
+  
+  //VALIDAR DETECCIÓN DE PELOTA CON OBSTÁCULOS
+  for(let i = 0; i < listaObstaculos.length; i++) {
+    if(pelota.x - pelota.radio <= listaObstaculos[i].x + listaObstaculos[i].largo && 
+      pelota.x > listaObstaculos[i].x &&
+      pelota.y >= listaObstaculos[i].y &&
+      pelota.y <= listaObstaculos[i].y + listaObstaculos[i].ancho){
+      listaObstaculos.splice(i, 1);
+      pelota.direccionY = -pelota.direccionY; //Si colisiona, rebota en la direcciom opuesta
+      break;
+    }
+   
+    
   }
 }
 
