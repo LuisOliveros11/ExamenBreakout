@@ -116,9 +116,11 @@ function draw() {
       pelota.y >= listaObstaculos[i].y &&
       pelota.y <= listaObstaculos[i].y + listaObstaculos[i].ancho){
       pelota.direccionY = -pelota.direccionY; //Si colisiona, rebota en la direcciom opuesta
-      jugador.puntuacion += listaObstaculos[i].valorPuntos;
-      listaObstaculos.splice(i, 1);
-      
+      listaObstaculos[i].vida--
+      if(listaObstaculos[i].vida == 0){
+        jugador.puntuacion += listaObstaculos[i].valorPuntos;
+        listaObstaculos.splice(i, 1);
+      }
     }
   }
   
