@@ -38,11 +38,13 @@ function setup() {
 function draw() {
   background("black");
  
-  
-  if(!juego_iniciado){
-    pelota.x = jugador.x + 50
-    pelota.y = jugador.y - 15 
+  if (!juego_iniciado) {
+    pelota.x = jugador.x + jugador.largo / 2;
+    pelota.y = jugador.y - pelota.radio;
+    pelota.direccionX = 0;
+    pelota.direccionY = 0;
   }
+  
   if(nivel_terminado){
     llenar_bloques_nivel();
   }
@@ -188,6 +190,13 @@ function keyPressed() {
   if (keyCode === 13 && juego_terminado) {
     reiniciar_juego();
   }
+  if (keyCode === 67 && nivel < 4) {
+    listaObstaculos = [];
+    nivel_terminado = true;
+    transicion_bandera = true;
+    contador_transicion = 0;
+    nivel++
+  }
   
 
 }
@@ -215,6 +224,7 @@ function llenar_bloques_nivel() {
     nivel_terminado = false;
     break;
     case 2:
+      juego_iniciado = false
       transicion_bandera = true;
       contador_transicion = 0 
       for (let i = -80; i <= -20; i += 20){ 
@@ -252,6 +262,7 @@ function llenar_bloques_nivel() {
       nivel_terminado = false;
       break;
       case 3:
+      juego_iniciado = false
       transicion_bandera = true;
       contador_transicion = 0
       for (let i = -80; i <= -20; i += 20){ 
