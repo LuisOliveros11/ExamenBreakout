@@ -156,7 +156,7 @@ function keyPressed() {
 function llenar_bloques_nivel() {
   switch(nivel){
     case 1:
-      for (let i = 180; i <= 220; i+=20){ 
+      for (let i = 180; i <= 240; i+=20){ 
         for (let k = 150; k < 650; k+=50){
           let obstaculoNivelUno = {
             largo: 50,
@@ -206,7 +206,7 @@ function llenar_bloques_nivel() {
       nivel_terminado = false;
       break;
       case 3:
-      for (let i = 180; i <= 300; i+=20){ 
+      for (let i = 180; i <= 280; i+=20){ 
         for (let k = 150; k < 650; k+=50){
           //IF PARA DIBUJAR SOLO DOS OBSTACULO NIVEL 2
           if((i === 200 && k === 350) || (i === 260 && k === 550) ){
