@@ -1,9 +1,10 @@
 let ancho_canvas = 800;
 let largo_canvas = 800;
 let listaObstaculos = [];
-let nivel = 1;
+let nivel = 2;
 let juego_terminado = false;
 let nivel_terminado = true;
+let juego_iniciado = false;
 
 let jugador = {
   puntuacion: 0,
@@ -32,6 +33,10 @@ function setup() {
 function draw() {
   background("black");
   
+  if(!juego_iniciado){
+    pelota.x = jugador.x + 50
+    pelota.y = jugador.y - 15 
+  }
   if(nivel_terminado){
     llenar_bloques_nivel();
   }
@@ -54,6 +59,18 @@ function draw() {
       if(listaObstaculos[i].vida != 10){
          listaObstaculos[i].vida--
       }
+      if(listaObstaculos[i].nivel === 2){
+         switch(listaObstaculos[i].vida){
+           case 1:
+             listaObstaculos[i].colorFondo = "#FFB4AE";
+           break;
+           case 2:
+             listaObstaculos[i].colorFondo = "#F87167";
+           break;
+         }
+      }
+      
+      
       if(listaObstaculos[i].vida == 0){
         jugador.puntuacion += listaObstaculos[i].valorPuntos;
         listaObstaculos.splice(i, 1);
@@ -107,8 +124,8 @@ function draw() {
   //VALIDA COLISION CON EL JUGADOR
   if(pelota.x - pelota.radio <= jugador.x + jugador.largo && 
     pelota.x > jugador.x &&
-    pelota.y >= jugador.y &&
-    pelota.y <= jugador.y + jugador.ancho){
+    pelota.y + pelota.radio >= jugador.y &&
+    pelota.y + pelota.radio <= jugador.y){
     pelota.direccionY = -pelota.direccionY;
   }
   
@@ -117,10 +134,9 @@ function draw() {
     //SE REINICIA LA POSICION Y LOS VALORES
     pelota.x = jugador.x + 50,
     pelota.y = jugador.y - 15,
-    pelota.velocidadX = 0;
-    pelota.velocidadY = 0; 
     pelota.direccionX = 0;
     pelota.direccionY = 0;
+    juego_iniciado = false;
     jugador.vidas--;
   }
 
@@ -143,8 +159,7 @@ function draw() {
 //ACTIVAR MOVIMIENTO DE LA PELOTA CON LA TECLA ESPACIO
 function keyPressed() {
   if (keyCode === 32) {
-    pelota.velocidadX = 5;
-    pelota.velocidadY = 5; 
+    juego_iniciado = true;
     pelota.direccionX = 1;
     pelota.direccionY = -1;
   }
@@ -165,11 +180,14 @@ function llenar_bloques_nivel() {
             colorFondo: "green",
             vida: 1,
             x: k,
-            y: i
+            y: i,
+            nivel: 1
           };
         listaObstaculos.push(obstaculoNivelUno);
         }
       }
+    pelota.velocidadX = 5;
+    pelota.velocidadY = 5; 
     nivel_terminado = false;
     break;
     case 2:
@@ -184,7 +202,8 @@ function llenar_bloques_nivel() {
               colorFondo: "red",
               vida: 3,
               x: k,
-              y: i
+              y: i,
+              nivel: 2
             };
             listaObstaculos.push(obstaculoNivelDos);
           }else{
@@ -195,7 +214,8 @@ function llenar_bloques_nivel() {
               colorFondo: "green",
               vida: 1,
               x: k,
-              y: i
+              y: i,
+              nivel: 1
             };
             listaObstaculos.push(obstaculoNivelUno);
           }
@@ -208,7 +228,7 @@ function llenar_bloques_nivel() {
       case 3:
       for (let i = 180; i <= 280; i+=20){ 
         for (let k = 150; k < 650; k+=50){
-          //IF PARA DIBUJAR SOLO DOS OBSTACULO NIVEL 2
+          //IF PARA DIBUJAR SOLO DOS OBSTACULO NIVEL 3
           if((i === 200 && k === 350) || (i === 260 && k === 550) ){
             let obstaculoNivelDos = {
               largo: 50,
@@ -217,7 +237,8 @@ function llenar_bloques_nivel() {
               colorFondo: "red",
               vida: 3,
               x: k,
-              y: i
+              y: i,
+              nivel: 2
             };
             listaObstaculos.push(obstaculoNivelDos);
           }else if(i === 240 && k === 400){
@@ -229,7 +250,8 @@ function llenar_bloques_nivel() {
               colorFondo: "#FFD350",
               vida: 10,
               x: k,
-              y: i
+              y: i,
+              nivel: 3
             };
             listaObstaculos.push(obstaculoNivelTres);
           }else{
@@ -240,7 +262,8 @@ function llenar_bloques_nivel() {
               colorFondo: "green",
               vida: 1,
               x: k,
-              y: i
+              y: i,
+              nivel: 1
             };
             listaObstaculos.push(obstaculoNivelUno);
           }
