@@ -109,10 +109,10 @@ function draw() {
   
   //CONTROLA MOVIMIENTO DEL JUGADOR 
   if(keyIsDown(LEFT_ARROW)  && jugador.x > 0) {
-    jugador.x -= 5;
+    jugador.x -= 9;
   }
   if(keyIsDown(RIGHT_ARROW)  && (jugador.x + jugador.largo) < 800) {
-    jugador.x += 5;
+    jugador.x += 9;
   }
   
   //VALIDA COLISION CON EL CANVAS
