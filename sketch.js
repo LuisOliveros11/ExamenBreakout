@@ -190,13 +190,7 @@ function keyPressed() {
   if (keyCode === 13 && juego_terminado) {
     reiniciar_juego();
   }
-  if (keyCode === 67 && nivel < 4) {
-    listaObstaculos = [];
-    nivel_terminado = true;
-    transicion_bandera = true;
-    contador_transicion = 0;
-    nivel++
-  }
+  
   
 
 }
