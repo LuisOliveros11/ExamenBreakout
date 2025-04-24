@@ -64,7 +64,7 @@ function draw() {
       pelota.y >= listaObstaculos[i].y &&
       pelota.y <= listaObstaculos[i].y + listaObstaculos[i].ancho){
       pelota.direccionY = -pelota.direccionY; //Si colisiona, rebota en la direcciom opuesta
-      if(listaObstaculos[i].vida != 10){
+      if(listaObstaculos[i].nivel != 3){
          listaObstaculos[i].vida--
       }
       if(listaObstaculos[i].nivel === 2){
@@ -188,6 +188,7 @@ function keyPressed() {
   if (keyCode === 13 && juego_terminado) {
     reiniciar_juego();
   }
+  
 
 }
 
@@ -251,6 +252,8 @@ function llenar_bloques_nivel() {
       nivel_terminado = false;
       break;
       case 3:
+      transicion_bandera = true;
+      contador_transicion = 0
       for (let i = -80; i <= -20; i += 20){ 
         for (let k = 150; k < 650; k+=50){
           //IF PARA DIBUJAR SOLO DOS OBSTACULO NIVEL 3
