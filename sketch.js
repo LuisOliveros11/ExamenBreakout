@@ -13,7 +13,7 @@ let contador_transicion = 0
 
 let jugador = {
   puntuacion: 0,
-  vidas: 13,
+  vidas: 3,
   largo: 100,
   ancho: 15,
   x: 350,
@@ -180,7 +180,7 @@ function draw() {
 
 //ACTIVAR MOVIMIENTO DE LA PELOTA CON LA TECLA ESPACIO
 function keyPressed() {
-  if (keyCode === 32) {
+  if (keyCode === 32 && !juego_iniciado) {
     juego_iniciado = true;
     pelota.direccionX = 1;
     pelota.direccionY = -1;
@@ -188,7 +188,7 @@ function keyPressed() {
   if (keyCode === 13 && juego_terminado) {
     reiniciar_juego();
   }
- 
+
 }
 
 function llenar_bloques_nivel() {
