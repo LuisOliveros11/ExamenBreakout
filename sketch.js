@@ -1,10 +1,13 @@
 let ancho_canvas = 800;
 let largo_canvas = 800;
 let listaObstaculos = [];
-let nivel = 2;
+let nivel = 1;
 let juego_terminado = false;
 let nivel_terminado = true;
 let juego_iniciado = false;
+
+let transicion_bandera = true;
+let contador_transicion = 0 
 
 let jugador = {
   puntuacion: 0,
@@ -70,7 +73,6 @@ function draw() {
          }
       }
       
-      
       if(listaObstaculos[i].vida == 0){
         jugador.puntuacion += listaObstaculos[i].valorPuntos;
         listaObstaculos.splice(i, 1);
@@ -94,6 +96,7 @@ function draw() {
       }
     }
   }
+  transicion()
   
   fill("white"); 
   rect(jugador.x,jugador.y,jugador.largo,jugador.ancho);
@@ -166,12 +169,13 @@ function keyPressed() {
   if (keyCode === 13 && juego_terminado) {
     reiniciar_juego();
   }
+
 }
 
 function llenar_bloques_nivel() {
   switch(nivel){
     case 1:
-      for (let i = 180; i <= 240; i+=20){ 
+      for (let i = -80; i <= -20; i+=20){ 
         for (let k = 150; k < 650; k+=50){
           let obstaculoNivelUno = {
             largo: 50,
@@ -191,10 +195,12 @@ function llenar_bloques_nivel() {
     nivel_terminado = false;
     break;
     case 2:
-      for (let i = 180; i <= 260; i+=20){ 
+      transicion_bandera = true;
+      contador_transicion = 0 
+      for (let i = -80; i <= -20; i += 20){ 
         for (let k = 150; k < 650; k+=50){
           //IF PARA DIBUJAR SOLO UN OBSTACULO NIVEL 2
-          if(i === 200 && k === 350){
+          if(i === -60& k === 350){
             let obstaculoNivelDos = {
               largo: 50,
               ancho: 20,
@@ -226,10 +232,10 @@ function llenar_bloques_nivel() {
       nivel_terminado = false;
       break;
       case 3:
-      for (let i = 180; i <= 280; i+=20){ 
+      for (let i = -80; i <= -20; i += 20){ 
         for (let k = 150; k < 650; k+=50){
           //IF PARA DIBUJAR SOLO DOS OBSTACULO NIVEL 3
-          if((i === 200 && k === 350) || (i === 260 && k === 550) ){
+          if((i === -60 && k === 350) || (i === -20 && k === 550) ){
             let obstaculoNivelDos = {
               largo: 50,
               ancho: 20,
@@ -241,7 +247,7 @@ function llenar_bloques_nivel() {
               nivel: 2
             };
             listaObstaculos.push(obstaculoNivelDos);
-          }else if(i === 240 && k === 400){
+          }else if(i === -40 && k === 400){
             //IF PARA DIBUJAR SOLO UN OBSTACULO NIVEL 3
             let obstaculoNivelTres = {
               largo: 50,
@@ -291,9 +297,33 @@ function reiniciar_juego() {
   pelota.direccionX = 0;
   pelota.direccionY = 0;
   
-  llenar_bloques_nivel();
+  //Reiniciar variables de animación de transición
+  transicion_bandera = true;
+  contador_transicion = 0;
+  
+  //Reiniciar los niveles
+  nivel = 1;
+  listaObstaculos = [];
+  nivel_terminado = true;
+  
     
   //Volver a iniciar el ciclo
   loop();
   juego_terminado = false;
+}
+
+
+function transicion() {
+  if (transicion_bandera) {
+    for (let i = listaObstaculos.length - 1; i >= 0; i--) { 
+      listaObstaculos[i].y += 3;
+    }
+
+    contador_transicion +=1;
+
+    if (contador_transicion >= 60) {
+      transicion_bandera = false;
+    }
+  }
+   
 }
