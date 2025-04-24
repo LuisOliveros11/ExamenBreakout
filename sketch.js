@@ -2,16 +2,18 @@ let ancho_canvas = 800;
 let largo_canvas = 800;
 let listaObstaculos = [];
 let nivel = 1;
+
 let juego_terminado = false;
 let nivel_terminado = true;
 let juego_iniciado = false;
+let juego_ganado = false;
 
 let transicion_bandera = true;
 let contador_transicion = 0 
 
 let jugador = {
   puntuacion: 0,
-  vidas: 3,
+  vidas: 13,
   largo: 100,
   ancho: 15,
   x: 350,
@@ -35,6 +37,7 @@ function setup() {
 
 function draw() {
   background("black");
+ 
   
   if(!juego_iniciado){
     pelota.x = jugador.x + 50
@@ -43,6 +46,8 @@ function draw() {
   if(nivel_terminado){
     llenar_bloques_nivel();
   }
+  
+  
   
   textSize(15);
   textAlign(LEFT, BASELINE);
@@ -89,7 +94,7 @@ function draw() {
             if(listaObstaculos.length === 1){
                nivel_terminado = true;
                nivel++;
-               console.log("juego terminado")
+               juego_ganado = true;
             }
           break;
         }
@@ -156,6 +161,20 @@ function draw() {
     noLoop(); 
     juego_terminado = true;
   }
+   if (juego_ganado) {
+    textSize(32);
+    fill("white");
+    background("black");
+    textAlign(CENTER, CENTER);
+    text("¡HAS GANADO EL JUEGO!", ancho_canvas / 2, largo_canvas / 2 - 30);
+    textSize(22);
+    text("Presiona Enter para volver a jugar", ancho_canvas / 2, largo_canvas / 2 + 20);
+    noLoop(); 
+    juego_terminado = true;
+  }
+  
+  //VALIDAR SI EL JUGADOR GANA EL JUEGO
+  
 }
 
 
@@ -169,7 +188,7 @@ function keyPressed() {
   if (keyCode === 13 && juego_terminado) {
     reiniciar_juego();
   }
-
+ 
 }
 
 function llenar_bloques_nivel() {
@@ -305,6 +324,7 @@ function reiniciar_juego() {
   nivel = 1;
   listaObstaculos = [];
   nivel_terminado = true;
+  juego_ganado = false;
   
     
   //Volver a iniciar el ciclo
